@@ -249,7 +249,33 @@ const tb=document.getElementById('types'),eb=document.getElementById('efs');
 const mb=document.getElementById('mut');
 TYPES.forEach(a=>{const b=document.createElement('button');b.textContent=a[1];b.onclick=()=>{sel=sel===a[0]?null:a[0];[...tb.children,...mb.children].forEach(c=>c.classList.toggle('on',c===b&&sel));upd()};(a[3]?mb:tb).appendChild(b)});
 EFS.forEach((a,n)=>{const b=document.createElement('button');b.textContent=a[0];b.style.setProperty('--c',a[2]);b.onclick=()=>{ef=ef===n?null:n;[...eb.children].forEach(c=>c.classList.toggle('on',c===b&&ef!==null));upd()};eb.appendChild(b)});
-requestAnimationFrame(frame);
+requestAnimationFrame(frame);(()=>{
+const NEW={
+wire:['Fio','Finíssimo e todo ondulado, parece um fio solto no ar.',(f,cx)=>funnel(cx,6,2,{p:1.3,sway:34,f})],
+needle:['Agulha','Reto e finíssimo, tipo uma agulha espetada do céu no chão.',(f,cx)=>funnel(cx,5,3,{sway:3,f})],
+vshape:['Em V','Largo lá em cima e termina em ponta, formando um V.',(f,cx)=>funnel(cx,110,3,{p:.85,f})],
+cigar:['Charuto','Curto, grosso e meio deitado, parece um charuto pendurado na nuvem.',(f,cx)=>funnel(cx-30,30,24,{bend:110,f,y0:B+50,nodeb:1,sway:3})],
+concave:['Lados côncavos','As laterais curvam pra dentro, afinando rápido e ficando fino embaixo.',(f,cx)=>funnel(cx,110,8,{p:2.4,f})],
+straight:['Lados retos','Laterais retas, quase paralelas, como um tubo.',(f,cx)=>funnel(cx,44,34,{f})],
+convex:['Lados convexos','As laterais estufam pra fora, tipo uma barriga.',(f,cx)=>funnel(cx,100,10,{p:.5,f})],
+segment:['Segmentado','Parece quebrado em pedaços, com buracos no meio do funil.',(f,cx)=>{x.save();x.beginPath();for(let i=0;i<4;i++)x.rect(0,B-4+i*62+Math.sin(T*2+i)*6,W,i>2?80:44);x.clip();funnel(cx,40,12,{f,p:1.1});x.restore()}],
+trunc:['Cone truncado','Cone com a ponta cortada: continua largo até o chão.',(f,cx)=>funnel(cx,95,45,{f})],
+bulb:['Bulbo','Funil fininho com uma bola grossa de poeira e vento perto do chão.',(f,cx)=>{funnel(cx,22,18,{f,sway:3});E(cx,320,55*f,70*f,'#6f747a')}],
+bowl:['Tigela','Base de nuvem larga e rasa, parecida com uma tigela virada pra baixo.',(f,cx)=>{E(cx,B+45,170*f,70*f,'#3d4045');funnel(cx,26,8,{f,fade:1,y0:B+90})}],
+flared:['Base alargada','Fino em cima e abre bem na base, perto do chão.',(f,cx)=>funnel(cx,14,75,{p:.25,f})],
+hour:['Ampulheta','Largo em cima, fininho no meio e alarga de novo embaixo.',(f,cx)=>{funnel(cx,85,9,{f,nodeb:1,p:1.2});funnel(cx,9,70,{f,y0:255,p:.4})}],
+sheath:['Com bainha','Um núcleo fino e forte envolvido por uma nuvem de poeira mais larga.',(f,cx)=>{funnel(cx,110,60,{f,fade:1,p:.8,nodeb:1});funnel(cx,18,6,{f,sway:6})}],
+loop:['Laço/Nó','Corda que dá um laço ou nó no meio do caminho.',(f,cx)=>{funnel(cx,14,3,{p:1.2,sway:18,f});const lx=cx+18*.46*Math.sin(T*1.4+1.84);x.lineWidth=4;E(lx,260,22*f,22*f,null,'#a3a9b0')}],
+cyclone:['Ciclone','Não é um tornado: é uma tempestade gigante girando em espiral, com centenas de km de largura. Dura dias e traz chuva forte.',(f,cx)=>{x.fillStyle='rgba(25,35,50,.35)';x.fillRect(0,0,W,G);x.save();x.translate(cx,190);x.lineCap='round';
+for(let k=0;k<4;k++){x.beginPath();for(let a=0;a<=6;a+=.2){const r=a*30*f,t=a+T*.8+k*1.57,px=Math.cos(t)*r*1.3,py=Math.sin(t)*r*.4;a?x.lineTo(px,py):x.moveTo(px,py)}x.strokeStyle='rgba(200,205,215,.3)';x.lineWidth=14;x.stroke()}
+E(0,0,18,7,'#1b1e22');x.restore();x.lineCap='butt';rain()}]
+};
+Object.keys(NEW).forEach(id=>{const a=NEW[id];TYPES.push([id,a[0],a[1]]);const b=document.createElement('button');b.textContent=a[0];
+b.onclick=()=>{sel=sel===id?null:id;[...tb.children,...mb.children].forEach(c=>c.classList.toggle('on',c===b&&sel));upd()};tb.appendChild(b)});
+const old=tornado;
+tornado=function(){if(NEW[sel])NEW[sel][2](ef===null?.9:SC[ef],540);else old()};
+})();
+ 
 </script>
 </body>
 </html>
