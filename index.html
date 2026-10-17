@@ -20,20 +20,20 @@ canvas{width:100%;height:auto;display:block;border-radius:10px;background:#1b1e2
 .row button{padding:9px 13px;border:1px solid var(--bd);background:var(--btn);color:var(--fg);border-radius:8px;font:inherit;font-size:15px;cursor:pointer}
 .row button.on{background:var(--c,#3b82f6);color:#fff;border-color:transparent;font-weight:bold}
 h2{font-size:14px;font-weight:normal;color:var(--mut);margin:0 0 6px}
-button:focus-visible{outline:3px solid #3b82f6;outline-offset:2px}
-</style>
-</head>
-<body>
-<div id="wrap">
-<canvas id="c" width="800" height="450"></canvas>
-<button id="skip">Pular cutscene</button>
-</div>
-<div id="ui" hidden>
-<p id="info"></p>
-<h2>Tipos de tornado</h2>
-<div class="row" id="types"></div>
-<h2>Tornados mutantes (podem passar de 400 mph)</h2>
-<div class="row" id="mut"></div>
+botão:focus-visible{contorno:3px sólido #3b82f6;deslocamento-contorno:2px}
+</ estilo >
+</head>​​
+< corpo >
+< div  id = "wrap" >
+< canvas  id = " c "  width = " 800"  height = "450" > </canvas>
+< button  id = " skip" > Cena popular </button>
+</div>​​
+< div  id = "ui"  hidden >
+< p  id = " info " > </p>
+< h2 > Tipos de tornado </ h2 >
+< div  class = "row"  id = " types " > </div>
+< h2 > Tornados mutantes (podem passar de 400 mph) </ h2 >
+< div  class = " row"  id = " mut" > </div>
 <h2>Escala Fujita Melhorada (EF)</h2>
 <div class="row" id="efs"></div>
 </div>
@@ -274,6 +274,36 @@ Object.keys(NEW).forEach(id=>{const a=NEW[id];TYPES.push([id,a[0],a[1]]);const b
 b.onclick=()=>{sel=sel===id?null:id;[...tb.children,...mb.children].forEach(c=>c.classList.toggle('on',c===b&&sel));upd()};tb.appendChild(b)});
 const old=tornado;
 tornado=function(){if(NEW[sel])NEW[sel][2](ef===null?.9:SC[ef],540);else old()};
+})();(()=>{
+const tw=(cx,hw,off,o={})=>{
+const y0=o.y0??B-4,N=30,P=t=>({x:cx+off(t),y:y0+(G-y0)*t,w:hw(t)}),L=[],Q=[];
+for(let i=0;i<=N;i++){const p=P(i/N);L.push([p.x-p.w,p.y]);Q.push([p.x+p.w,p.y])}
+x.beginPath();x.moveTo(...L[0]);L.forEach(p=>x.lineTo(...p));Q.reverse().forEach(p=>x.lineTo(...p));x.closePath();
+let mw=1;for(let i=0;i<=N;i++)mw=Math.max(mw,hw(i/N));
+const c=P(.5).x,g=x.createLinearGradient(c-mw,0,c+mw,0),k=o.c||['#33363b','#8d9399'];
+g.addColorStop(0,k[0]);g.addColorStop(.5,k[1]);g.addColorStop(1,k[0]);
+x.fillStyle=o.fade?'rgba(150,155,160,.3)':g;x.fill();
+if(!o.fade){x.lineWidth=1.5;for(let j=1;j<=12;j++){const t=j/13,p=P(t);for(let m=0;m<3;m++){const a=T*3+j*.7+m*2.1;if(Math.cos(a)>0){const px=p.x+p.w*.85*Math.sin(a);x.strokeStyle='rgba(220,225,230,.28)';x.beginPath();x.moveTo(px-p.w*.25,p.y);x.lineTo(px+p.w*.25,p.y+4);x.stroke()}}}}
+if(!o.nodust){const b=P(1);E(b.x,G-2,b.w*1.5+22,8,'rgba(95,82,66,.5)');x.fillStyle='#6b5a46';for(let i=0;i<16;i++){const a=T*(2+(i%5)*.4)+i*1.7;x.fillRect(b.x+Math.cos(a)*(b.w+10+(i%6)*8),G-((i*37)%60)-Math.abs(Math.sin(a))*6,3,2)}}
+};
+const D={
+wire:(f,c)=>tw(c,t=>1.8*f,t=>30*f*Math.sin(t*7+T*1.5)*t,{c:['#111','#444']}),
+needle:(f,c)=>tw(c,t=>(16*Math.pow(1-t,1.6)+1.5)*f,t=>6*f*t,{c:['#101113','#4a4d52']}),
+vshape:(f,c)=>tw(c,t=>(100*Math.pow(1-t,1.15)+3)*f,t=>0),
+cigar:(f,c)=>{x.save();x.translate(c-20,235);x.rotate(.55);const g=x.createLinearGradient(0,-28*f,0,28*f);g.addColorStop(0,'#33363b');g.addColorStop(.5,'#8d9399');g.addColorStop(1,'#33363b');x.fillStyle=g;x.beginPath();x.ellipse(0,0,110*f,26*f,0,0,7);x.fill();x.strokeStyle='rgba(220,225,230,.3)';x.lineWidth=1.5;for(let i=0;i<8;i++){const u=((T*.6+i/8)%1)*2-1;x.beginPath();x.moveTo(u*90*f,-20*f*Math.cos(u*1.5));x.lineTo(u*90*f+8,20*f*Math.cos(u*1.5));x.stroke()}x.restore()},
+concave:(f,c)=>tw(c,t=>(92*Math.pow(1-t,2.3)+8)*f,t=>60*f*t*t),
+straight:(f,c)=>tw(c,t=>(30+8*t)*f,t=>0),
+convex:(f,c)=>tw(c,t=>(10+88*Math.pow(1-t,.45))*f,t=>0),
+segment:(f,c)=>{x.save();x.beginPath();[[B-4,205],[222,292],[312,G+10]].forEach((a,i)=>x.rect(0,a[0]+Math.sin(T*2+i)*5,W,a[1]-a[0]));x.clip();tw(c,t=>(5+34*t)*f,t=>12*f*Math.sin(t*5+T)*(1-t*.6));x.restore()},
+trunc:(f,c)=>tw(c,t=>(90-60*t)*f,t=>-50*f*t*t),
+bulb:(f,c)=>tw(c,t=>(14+58*Math.exp(-Math.pow((t-.78)/.17,2)))*f,t=>8*f*Math.sin(T+t*3)*(1-t)),
+bowl:(f,c)=>{const g=x.createLinearGradient(0,150,0,150+100*f);g.addColorStop(0,'#26292d');g.addColorStop(1,'#55595f');x.fillStyle=g;x.beginPath();x.ellipse(c,150,200*f,100*f,0,0,Math.PI);x.fill();x.strokeStyle='rgba(220,225,230,.25)';x.lineWidth=2;x.setLineDash([22,16]);for(let k=1;k<4;k++){x.lineDashOffset=-T*(30+k*10);x.beginPath();x.ellipse(c,150,(200-k*45)*f,(100-k*22)*f,0,0,Math.PI);x.stroke()}x.setLineDash([]);tw(c,t=>(16*(1-t)+3)*f,t=>0,{fade:1,y0:150+95*f,nodust:1});E(c,G-2,70*f,8,'rgba(95,82,66,.5)')},
+flared:(f,c)=>tw(c,t=>(10+70*Math.pow(t,5))*f,t=>14*f*Math.sin(T+t*3)*(1-t*.5)),
+hour:(f,c)=>tw(c,t=>(14+62*Math.pow(Math.abs(t-.5)*2,1.6))*f,t=>6*f*Math.sin(T*1.2+t*3)),
+sheath:(f,c)=>{tw(c,t=>(90-35*t)*f,t=>0,{fade:1,nodust:1});tw(c,t=>(16-9*t)*f,t=>8*f*Math.sin(T*1.5+t*4)*t,{c:['#17181a','#555a60']});E(c,G-4,120*f,16,'rgba(190,195,200,.4)')}
+};
+const old3=tornado;
+tornado=function(){if(D[sel])D[sel](ef===null?.9:SC[ef],540);else old3()};
 })();
  
 </script>
