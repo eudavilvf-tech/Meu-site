@@ -250,7 +250,7 @@ const mb=document.getElementById('mut');
 TYPES.forEach(a=>{const b=document.createElement('button');b.textContent=a[1];b.onclick=()=>{sel=sel===a[0]?null:a[0];[...tb.children,...mb.children].forEach(c=>c.classList.toggle('on',c===b&&sel));upd()};(a[3]?mb:tb).appendChild(b)});
 EFS.forEach((a,n)=>{const b=document.createElement('button');b.textContent=a[0];b.style.setProperty('--c',a[2]);b.onclick=()=>{ef=ef===n?null:n;[...eb.children].forEach(c=>c.classList.toggle('on',c===b&&ef!==null));upd()};eb.appendChild(b)});
 requestAnimationFrame(frame);
-<script>
+
 try{
 const o=y=>12*((y-146)/249)*Math.sin(T*1.4+(y-146)/62);
 const tw=(cx,hw,off,op={})=>{
@@ -294,6 +294,6 @@ b.onclick=()=>{sel=sel===id?null:id;[...tb.children,...mb.children].forEach(c=>c
 const old=tornado;
 tornado=function(){if(DR[sel]){try{DR[sel][2](ef===null?.9:SC[ef],540)}catch(e){}}else old()};
 }catch(e){document.body.insertAdjacentHTML('beforeend','<pre style="color:red;white-space:pre-wrap">'+e+'</pre>')}
-</script></script>
+</script>
 </body>
  </html>
