@@ -295,5 +295,19 @@ const old=tornado;
 tornado=function(){if(DR[sel]){try{DR[sel][2](ef===null?.9:SC[ef],540)}catch(e){}}else old()};
 }catch(e){document.body.insertAdjacentHTML('beforeend','<pre style="color:red;white-space:pre-wrap">'+e+'</pre>')}
 </script>
+try{
+const old4=tornado;
+tornado=function(){if(sel==='bulb'){try{
+const f=ef===null?.9:SC[ef],c=540,r=85*f,y1=150+r,y2=y1+60*f;
+const g=x.createLinearGradient(c-r,0,c+r,0);g.addColorStop(0,'#26292d');g.addColorStop(.5,'#6a6f76');g.addColorStop(1,'#26292d');
+x.fillStyle=g;x.beginPath();x.ellipse(c,150,r*1.15,r,0,0,Math.PI);x.closePath();x.fill();
+x.strokeStyle='rgba(220,225,230,.22)';x.lineWidth=2;
+for(let k=1;k<4;k++){x.beginPath();x.ellipse(c,150,r*1.15*(1-k*.22),r*(1-k*.22),0,0,Math.PI);x.stroke()}
+const N=16,L=[],Q=[];
+for(let i=0;i<=N;i++){const t=i/N,y=y1-4+(y2-y1+4)*t,w=(10*(1-t)+1.5)*f,of=5*f*Math.sin(T*1.8+t*3)*t;L.push([c+of-w,y]);Q.push([c+of+w,y])}
+x.fillStyle='#5b6068';x.beginPath();x.moveTo(...L[0]);L.forEach(p=>x.lineTo(...p));Q.reverse().forEach(p=>x.lineTo(...p));x.closePath();x.fill();
+}catch(e){}}else old4()};
+}catch(e){document.body.insertAdjacentHTML('beforeend','<pre style="color:red;white-space:pre-wrap">'+e+'</pre>')}
+ </script>
 </body>
  </html>
